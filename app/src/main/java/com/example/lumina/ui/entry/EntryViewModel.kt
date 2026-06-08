@@ -4,9 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.lumina.data.JournalEntry
-import com.example.lumina.data.JournalRepository
-import com.example.lumina.data.Mood
+import com.example.lumina.data.model.JournalEntry
+import com.example.lumina.data.repository.JournalRepository
+import com.example.lumina.data.model.Mood
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

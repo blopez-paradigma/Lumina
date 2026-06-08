@@ -47,8 +47,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.lumina.R
-import com.example.lumina.data.JournalEntry
-import com.example.lumina.data.Mood
+import com.example.lumina.data.model.JournalEntry
+import com.example.lumina.data.model.Mood
 import com.example.lumina.ui.theme.LuminaTheme
 import java.text.SimpleDateFormat
 import java.util.Date

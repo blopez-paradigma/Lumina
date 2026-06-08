@@ -1,4 +1,7 @@
-package com.example.lumina.data
+package com.example.lumina.data.repository
+
+import com.example.lumina.data.local.JournalDao
+import com.example.lumina.data.model.JournalEntry
 
 import kotlinx.coroutines.flow.Flow
 

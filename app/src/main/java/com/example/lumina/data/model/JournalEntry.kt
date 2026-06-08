@@ -1,4 +1,4 @@
-package com.example.lumina.data
+package com.example.lumina.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

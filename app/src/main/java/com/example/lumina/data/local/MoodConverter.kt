@@ -1,4 +1,6 @@
-package com.example.lumina.data
+package com.example.lumina.data.local
+
+import com.example.lumina.data.model.Mood
 
 import androidx.room.TypeConverter
 

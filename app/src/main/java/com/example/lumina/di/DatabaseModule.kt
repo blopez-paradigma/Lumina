@@ -1,10 +1,10 @@
 package com.example.lumina.di
 
 import android.content.Context
-import com.example.lumina.data.JournalDao
-import com.example.lumina.data.JournalDatabase
-import com.example.lumina.data.JournalRepository
-import com.example.lumina.data.OfflineJournalRepository
+import com.example.lumina.data.local.JournalDao
+import com.example.lumina.data.local.JournalDatabase
+import com.example.lumina.data.repository.JournalRepository
+import com.example.lumina.data.repository.OfflineJournalRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

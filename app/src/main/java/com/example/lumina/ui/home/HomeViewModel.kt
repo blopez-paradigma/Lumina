@@ -2,8 +2,8 @@ package com.example.lumina.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lumina.data.JournalEntry
-import com.example.lumina.data.JournalRepository
+import com.example.lumina.data.model.JournalEntry
+import com.example.lumina.data.repository.JournalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

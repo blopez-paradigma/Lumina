@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.Lumina" parent="Theme.MaterialComponents.Light" />
+</resources>

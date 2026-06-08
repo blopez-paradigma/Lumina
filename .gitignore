@@ -1,15 +1,19 @@
+# Android Studio / IntelliJ specific files
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+
+# Ignore the ENTIRE .idea folder (Much safer)
+/.idea/
+
+# EXCEPTIONS: Keep VCS and Code Styles settings if sharing with a team
+!/.idea/vcs.xml
+!/.idea/codeStyles/
+
+# OS specific files
+.DS_Store
+Thumbs.db

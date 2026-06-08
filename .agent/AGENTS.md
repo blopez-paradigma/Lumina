@@ -1,2 +1,2 @@
-- Cada vez que crees un código, crea también un commit. Pero no hagas push hasta que te lo diga
 - Cada vez que hagas un cambio de código, realiza una compilación (p. ej., `app:compileDebugKotlin`) en lugar de un assemble completo para verificar errores.
+- Cada vez que crees un código, crea también un commit. Pero no hagas push hasta que te lo diga

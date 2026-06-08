@@ -1,1 +1,1 @@
-- Contesta en español
+- Cada vez que crees un código, crea también un commit. Pero no hagas push hasta que te lo diga

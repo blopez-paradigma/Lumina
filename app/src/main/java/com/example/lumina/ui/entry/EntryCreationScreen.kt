@@ -30,9 +30,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.lumina.data.Mood
-import com.example.lumina.ui.AppViewModelProvider
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,7 +42,7 @@ import java.util.Locale
 fun EntryCreationScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: EntryViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val entryUiState = viewModel.entryUiState

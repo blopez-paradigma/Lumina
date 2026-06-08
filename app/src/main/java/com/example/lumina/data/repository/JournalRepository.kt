@@ -5,6 +5,9 @@ import com.example.lumina.data.model.JournalEntry
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository that provides methods to manage and access [JournalEntry] data from the underlying data
+ */
 interface JournalRepository {
     fun getAllEntriesStream(): Flow<List<JournalEntry>>
     suspend fun getEntryStream(id: Long): JournalEntry?

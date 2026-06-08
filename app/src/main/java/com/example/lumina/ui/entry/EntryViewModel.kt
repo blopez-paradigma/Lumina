@@ -7,11 +7,16 @@ import androidx.lifecycle.ViewModel
 import com.example.lumina.data.JournalEntry
 import com.example.lumina.data.JournalRepository
 import com.example.lumina.data.Mood
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * ViewModel to validate and insert items in the Room database.
  */
-class EntryViewModel(private val journalRepository: JournalRepository) : ViewModel() {
+@HiltViewModel
+class EntryViewModel @Inject constructor(
+    private val journalRepository: JournalRepository
+) : ViewModel() {
 
     /**
      * Holds current item ui state

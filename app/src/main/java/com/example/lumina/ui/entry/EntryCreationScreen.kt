@@ -29,15 +29,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.lumina.data.model.Mood
+import com.example.lumina.ui.theme.LuminaTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EntryCreationScreen(
     navigateBack: () -> Unit,
@@ -45,8 +46,29 @@ fun EntryCreationScreen(
     viewModel: EntryViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val entryUiState = viewModel.entryUiState
+    EntryCreationContent(
+        entryUiState = viewModel.entryUiState,
+        onValueChange = viewModel::updateUiState,
+        onSaveClick = {
+            coroutineScope.launch {
+                viewModel.saveEntry()
+                navigateBack()
+            }
+        },
+        navigateBack = navigateBack,
+        modifier = modifier
+    )
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EntryCreationContent(
+    entryUiState: EntryUiState,
+    onValueChange: (EntryDetails) -> Unit,
+    onSaveClick: () -> Unit,
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,12 +84,7 @@ fun EntryCreationScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                viewModel.saveEntry()
-                                navigateBack()
-                            }
-                        },
+                        onClick = onSaveClick,
                         enabled = entryUiState.isEntryValid
                     ) {
                         Icon(
@@ -85,7 +102,7 @@ fun EntryCreationScreen(
     ) { innerPadding ->
         EntryForm(
             entryDetails = entryUiState.entryDetails,
-            onValueChange = viewModel::updateUiState,
+            onValueChange = onValueChange,
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -179,5 +196,25 @@ fun MoodDropdown(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EntryCreationPreview() {
+    LuminaTheme {
+        EntryCreationContent(
+            entryUiState = EntryUiState(
+                entryDetails = EntryDetails(
+                    title = "A Great Day",
+                    content = "Today was an amazing day! I learned a lot about Jetpack Compose.",
+                    mood = Mood.HAPPY
+                ),
+                isEntryValid = true
+            ),
+            onValueChange = {},
+            onSaveClick = {},
+            navigateBack = {}
+        )
     }
 }

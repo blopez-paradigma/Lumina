@@ -6,16 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lumina.domain.model.JournalEntry
 import com.example.lumina.domain.model.Mood
-import com.example.lumina.domain.repository.JournalRepository
+import com.example.lumina.domain.usecase.SaveEntryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * ViewModel to validate and insert items in the Room database.
- */
 @HiltViewModel
 class EntryViewModel @Inject constructor(
-    private val journalRepository: JournalRepository
+    private val saveEntryUseCase: SaveEntryUseCase
 ) : ViewModel() {
 
     var entryUiState by mutableStateOf(EntryUiState())
@@ -28,7 +25,7 @@ class EntryViewModel @Inject constructor(
 
     suspend fun saveEntry() {
         if (validateInput(entryUiState.entryDetails)) {
-            journalRepository.insertEntry(entryUiState.entryDetails.toJournalEntry())
+            saveEntryUseCase(entryUiState.entryDetails.toJournalEntry())
         }
     }
 

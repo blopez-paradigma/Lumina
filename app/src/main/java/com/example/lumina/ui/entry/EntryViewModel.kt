@@ -4,9 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.lumina.data.model.JournalEntry
-import com.example.lumina.data.repository.JournalRepository
-import com.example.lumina.data.model.Mood
+import com.example.lumina.domain.model.JournalEntry
+import com.example.lumina.domain.model.Mood
+import com.example.lumina.domain.repository.JournalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,24 +18,14 @@ class EntryViewModel @Inject constructor(
     private val journalRepository: JournalRepository
 ) : ViewModel() {
 
-    /**
-     * Holds current item ui state
-     */
     var entryUiState by mutableStateOf(EntryUiState())
         private set
 
-    /**
-     * Updates the [entryUiState] with the value provided in the argument. This method also triggers
-     * a validation for input values.
-     */
     fun updateUiState(entryDetails: EntryDetails) {
         entryUiState =
             EntryUiState(entryDetails = entryDetails, isEntryValid = validateInput(entryDetails))
     }
 
-    /**
-     * Inserts a [JournalEntry] in the Room database
-     */
     suspend fun saveEntry() {
         if (validateInput(entryUiState.entryDetails)) {
             journalRepository.insertEntry(entryUiState.entryDetails.toJournalEntry())
@@ -49,9 +39,6 @@ class EntryViewModel @Inject constructor(
     }
 }
 
-/**
- * Represents Ui State for an Item.
- */
 data class EntryUiState(
     val entryDetails: EntryDetails = EntryDetails(),
     val isEntryValid: Boolean = false
@@ -65,9 +52,6 @@ data class EntryDetails(
     val mood: Mood = Mood.HAPPY
 )
 
-/**
- * Extension function to convert [EntryDetails] to [JournalEntry]
- */
 fun EntryDetails.toJournalEntry(): JournalEntry = JournalEntry(
     id = id,
     title = title,
@@ -76,9 +60,6 @@ fun EntryDetails.toJournalEntry(): JournalEntry = JournalEntry(
     mood = mood
 )
 
-/**
- * Extension function to convert [JournalEntry] to [EntryDetails]
- */
 fun JournalEntry.toEntryDetails(): EntryDetails = EntryDetails(
     id = id,
     title = title,

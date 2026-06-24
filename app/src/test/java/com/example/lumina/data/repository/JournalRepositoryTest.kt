@@ -1,8 +1,9 @@
 package com.example.lumina.data.repository
 
 import com.example.lumina.data.local.JournalDao
-import com.example.lumina.data.model.JournalEntry
-import com.example.lumina.data.model.Mood
+import com.example.lumina.data.model.JournalEntryEntity
+import com.example.lumina.domain.model.JournalEntry
+import com.example.lumina.domain.model.Mood
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -27,56 +28,64 @@ class JournalRepositoryTest {
 
     @Test
     fun `insertEntry calls dao insertEntry`() = runTest {
-        val entry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        coEvery { dao.insertEntry(entry) } returns Unit
-        
-        repository.insertEntry(entry)
-        
-        coVerify(exactly = 1) { dao.insertEntry(entry) }
+        val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        coEvery { dao.insertEntry(entityEntry) } returns Unit
+
+        repository.insertEntry(domainEntry)
+
+        coVerify(exactly = 1) { dao.insertEntry(entityEntry) }
     }
 
     @Test
     fun `deleteEntry calls dao deleteEntry`() = runTest {
-        val entry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        coEvery { dao.deleteEntry(entry) } returns Unit
-        
-        repository.deleteEntry(entry)
-        
-        coVerify(exactly = 1) { dao.deleteEntry(entry) }
+        val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        coEvery { dao.deleteEntry(entityEntry) } returns Unit
+
+        repository.deleteEntry(domainEntry)
+
+        coVerify(exactly = 1) { dao.deleteEntry(entityEntry) }
     }
 
     @Test
     fun `updateEntry calls dao updateEntry`() = runTest {
-        val entry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        coEvery { dao.updateEntry(entry) } returns Unit
-        
-        repository.updateEntry(entry)
-        
-        coVerify(exactly = 1) { dao.updateEntry(entry) }
+        val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        coEvery { dao.updateEntry(entityEntry) } returns Unit
+
+        repository.updateEntry(domainEntry)
+
+        coVerify(exactly = 1) { dao.updateEntry(entityEntry) }
     }
 
     @Test
     fun `getEntryStream returns correct entry`() = runTest {
-        val entry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        coEvery { dao.getEntryById(1) } returns entry
-        
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
+        coEvery { dao.getEntryById(1) } returns entityEntry
+
         val result = repository.getEntryStream(1)
-        
-        assertEquals(entry, result)
+
+        assertEquals(domainEntry, result)
         coVerify(exactly = 1) { dao.getEntryById(1) }
     }
 
     @Test
     fun `getAllEntriesStream returns all entries`() = runTest {
-        val entries = listOf(
+        val entityEntries = listOf(
+            JournalEntryEntity(1, "Title 1", "Content 1", 12345L, Mood.HAPPY),
+            JournalEntryEntity(2, "Title 2", "Content 2", 12346L, Mood.CALM)
+        )
+        val domainEntries = listOf(
             JournalEntry(1, "Title 1", "Content 1", 12345L, Mood.HAPPY),
             JournalEntry(2, "Title 2", "Content 2", 12346L, Mood.CALM)
         )
-        every { dao.getAllEntries() } returns flowOf(entries)
-        
+        every { dao.getAllEntries() } returns flowOf(entityEntries)
+
         val result = repository.getAllEntriesStream().first()
-        
-        assertEquals(entries, result)
+
+        assertEquals(domainEntries, result)
         verify(exactly = 1) { dao.getAllEntries() }
     }
 }

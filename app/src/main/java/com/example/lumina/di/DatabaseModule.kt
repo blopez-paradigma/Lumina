@@ -4,8 +4,8 @@ import android.content.Context
 import com.example.lumina.data.local.JournalDao
 import com.example.lumina.data.local.JournalDatabase
 import com.example.lumina.data.remote.api.LuminaApiService
-import com.example.lumina.data.repository.JournalRepository
 import com.example.lumina.data.repository.SyncedJournalRepository
+import com.example.lumina.domain.repository.JournalRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

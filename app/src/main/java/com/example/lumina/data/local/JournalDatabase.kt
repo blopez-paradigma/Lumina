@@ -1,14 +1,13 @@
 package com.example.lumina.data.local
 
-import com.example.lumina.data.model.JournalEntry
-
+import com.example.lumina.data.model.JournalEntryEntity
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [JournalEntry::class], version = 12, exportSchema = false)
+@Database(entities = [JournalEntryEntity::class], version = 12, exportSchema = false)
 @TypeConverters(MoodConverter::class)
 abstract class JournalDatabase : RoomDatabase() {
     abstract fun journalDao(): JournalDao

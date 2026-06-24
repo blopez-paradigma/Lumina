@@ -33,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.lumina.data.model.Mood
+import com.example.lumina.domain.model.Mood
 import com.example.lumina.ui.theme.LuminaTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

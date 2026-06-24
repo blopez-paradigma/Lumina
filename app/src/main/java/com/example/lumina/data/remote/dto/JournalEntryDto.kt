@@ -1,7 +1,8 @@
 package com.example.lumina.data.remote.dto
 
-import com.example.lumina.data.model.JournalEntry
-import com.example.lumina.data.model.Mood
+import com.example.lumina.data.model.JournalEntryEntity
+import com.example.lumina.domain.model.JournalEntry
+import com.example.lumina.domain.model.Mood
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -13,7 +14,7 @@ data class JournalEntryDto(
     @Json(name = "body") val body: String
 )
 
-fun JournalEntryDto.toJournalEntry(): JournalEntry = JournalEntry(
+fun JournalEntryDto.toJournalEntryEntity(): JournalEntryEntity = JournalEntryEntity(
     id = id,
     title = title,
     content = body,

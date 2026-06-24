@@ -14,6 +14,7 @@ interface JournalRepository {
     suspend fun insertEntry(entry: JournalEntry)
     suspend fun deleteEntry(entry: JournalEntry)
     suspend fun updateEntry(entry: JournalEntry)
+    suspend fun syncFromRemote(): Result<Unit>
 }
 
 class OfflineJournalRepository(private val journalDao: JournalDao) : JournalRepository {
@@ -22,4 +23,5 @@ class OfflineJournalRepository(private val journalDao: JournalDao) : JournalRepo
     override suspend fun insertEntry(entry: JournalEntry) = journalDao.insertEntry(entry)
     override suspend fun deleteEntry(entry: JournalEntry) = journalDao.deleteEntry(entry)
     override suspend fun updateEntry(entry: JournalEntry) = journalDao.updateEntry(entry)
+    override suspend fun syncFromRemote(): Result<Unit> = Result.success(Unit)
 }

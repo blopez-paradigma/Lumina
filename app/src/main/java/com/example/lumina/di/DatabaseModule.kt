@@ -3,8 +3,9 @@ package com.example.lumina.di
 import android.content.Context
 import com.example.lumina.data.local.JournalDao
 import com.example.lumina.data.local.JournalDatabase
+import com.example.lumina.data.remote.api.LuminaApiService
 import com.example.lumina.data.repository.JournalRepository
-import com.example.lumina.data.repository.OfflineJournalRepository
+import com.example.lumina.data.repository.SyncedJournalRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideJournalRepository(journalDao: JournalDao): JournalRepository {
-        return OfflineJournalRepository(journalDao)
+    fun provideJournalRepository(journalDao: JournalDao, api: LuminaApiService): JournalRepository {
+        return SyncedJournalRepository(journalDao, api)
     }
 }

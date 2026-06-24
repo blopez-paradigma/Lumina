@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -16,7 +17,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    journalRepository: JournalRepository
+    private val journalRepository: JournalRepository
 ) : ViewModel() {
 
     /**
@@ -29,6 +30,12 @@ class HomeViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = HomeUiState()
             )
+
+    init {
+        viewModelScope.launch {
+            journalRepository.syncFromRemote()
+        }
+    }
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L

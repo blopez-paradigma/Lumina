@@ -3,8 +3,8 @@ package com.example.lumina.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lumina.domain.model.JournalEntry
-import com.example.lumina.domain.repository.JournalRepository
 import com.example.lumina.domain.usecase.GetAllEntriesUseCase
+import com.example.lumina.domain.usecase.SyncFromRemoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllEntries: GetAllEntriesUseCase,
-    private val journalRepository: JournalRepository
+    private val syncFromRemote: SyncFromRemoteUseCase
 ) : ViewModel() {
 
     val homeUiState: StateFlow<HomeUiState> =
@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            journalRepository.syncFromRemote()
+            syncFromRemote()
         }
     }
 

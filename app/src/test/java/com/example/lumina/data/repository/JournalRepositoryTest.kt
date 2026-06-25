@@ -29,7 +29,7 @@ class JournalRepositoryTest {
     @Test
     fun `insertEntry calls dao insertEntry`() = runTest {
         val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY.name)
         coEvery { dao.insertEntry(entityEntry) } returns Unit
 
         repository.insertEntry(domainEntry)
@@ -40,7 +40,7 @@ class JournalRepositoryTest {
     @Test
     fun `deleteEntry calls dao deleteEntry`() = runTest {
         val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY.name)
         coEvery { dao.deleteEntry(entityEntry) } returns Unit
 
         repository.deleteEntry(domainEntry)
@@ -51,7 +51,7 @@ class JournalRepositoryTest {
     @Test
     fun `updateEntry calls dao updateEntry`() = runTest {
         val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
-        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY.name)
         coEvery { dao.updateEntry(entityEntry) } returns Unit
 
         repository.updateEntry(domainEntry)
@@ -61,7 +61,7 @@ class JournalRepositoryTest {
 
     @Test
     fun `getEntryStream returns correct entry`() = runTest {
-        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY)
+        val entityEntry = JournalEntryEntity(1, "Title", "Content", 12345L, Mood.HAPPY.name)
         val domainEntry = JournalEntry(1, "Title", "Content", 12345L, Mood.HAPPY)
         coEvery { dao.getEntryById(1) } returns entityEntry
 
@@ -74,8 +74,8 @@ class JournalRepositoryTest {
     @Test
     fun `getAllEntriesStream returns all entries`() = runTest {
         val entityEntries = listOf(
-            JournalEntryEntity(1, "Title 1", "Content 1", 12345L, Mood.HAPPY),
-            JournalEntryEntity(2, "Title 2", "Content 2", 12346L, Mood.CALM)
+            JournalEntryEntity(1, "Title 1", "Content 1", 12345L, Mood.HAPPY.name),
+            JournalEntryEntity(2, "Title 2", "Content 2", 12346L, Mood.CALM.name)
         )
         val domainEntries = listOf(
             JournalEntry(1, "Title 1", "Content 1", 12345L, Mood.HAPPY),

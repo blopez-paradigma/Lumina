@@ -19,7 +19,7 @@ fun JournalEntryDto.toJournalEntryEntity(): JournalEntryEntity = JournalEntryEnt
     title = title,
     content = body,
     date = System.currentTimeMillis(),
-    mood = Mood.CALM
+    mood = Mood.CALM.name
 )
 
 fun JournalEntry.toDto(): JournalEntryDto = JournalEntryDto(

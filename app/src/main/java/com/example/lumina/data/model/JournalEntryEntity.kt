@@ -2,7 +2,6 @@ package com.example.lumina.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.lumina.domain.model.Mood
 
 @Entity(tableName = "journal_entries")
 data class JournalEntryEntity(
@@ -11,5 +10,5 @@ data class JournalEntryEntity(
     val title: String,
     val content: String,
     val date: Long,
-    val mood: Mood
+    val mood: String
 )

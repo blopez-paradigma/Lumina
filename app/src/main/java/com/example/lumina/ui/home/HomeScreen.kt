@@ -83,7 +83,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Entry"
+                    contentDescription = stringResource(R.string.add_entry_content_description)
                 )
             }
         }
@@ -120,7 +120,7 @@ private fun HomeBody(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No entries yet. Start journaling!",
+                        text = stringResource(R.string.no_entries_yet),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -153,7 +153,7 @@ fun JournalHeader(modifier: Modifier = Modifier) {
                 .data("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200")
                 .crossfade(true)
                 .build(),
-            contentDescription = "Tranquil Nature Scene",
+            contentDescription = stringResource(R.string.header_image_content_description),
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
@@ -179,12 +179,12 @@ fun JournalHeader(modifier: Modifier = Modifier) {
         ) {
             Column {
                 Text(
-                    text = "Welcome back,",
+                    text = stringResource(R.string.welcome_back),
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White.copy(alpha = 0.8f)
                 )
                 Text(
-                    text = "Your Thoughts, Captured.",
+                    text = stringResource(R.string.tagline),
                     style = MaterialTheme.typography.headlineSmall,
                     color = Color.White,
                     fontWeight = FontWeight.Bold

@@ -30,9 +30,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.lumina.R
 import com.example.lumina.domain.model.Mood
 import com.example.lumina.ui.theme.LuminaTheme
 import kotlinx.coroutines.launch
@@ -74,12 +76,12 @@ fun EntryCreationContent(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("New Journal Entry") },
+                title = { Text(stringResource(R.string.new_journal_entry)) },
                 navigationIcon = {
                     IconButton(onClick = navigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back_content_description)
                         )
                     }
                 },
@@ -90,7 +92,7 @@ fun EntryCreationContent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Done,
-                            contentDescription = "Save Entry"
+                            contentDescription = stringResource(R.string.save_entry_content_description)
                         )
                     }
                 },
@@ -126,7 +128,7 @@ fun EntryForm(
         OutlinedTextField(
             value = entryDetails.title,
             onValueChange = { onValueChange(entryDetails.copy(title = it)) },
-            label = { Text("Title") },
+            label = { Text(stringResource(R.string.entry_title_label)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -136,7 +138,7 @@ fun EntryForm(
         OutlinedTextField(
             value = SimpleDateFormat("MMMM dd, yyyy", locale).format(Date(entryDetails.date)),
             onValueChange = { },
-            label = { Text("Date") },
+            label = { Text(stringResource(R.string.entry_date_label)) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true
         )
@@ -149,7 +151,7 @@ fun EntryForm(
         OutlinedTextField(
             value = entryDetails.content,
             onValueChange = { onValueChange(entryDetails.copy(content = it)) },
-            label = { Text("How was your day?") },
+            label = { Text(stringResource(R.string.entry_content_label)) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 5
         )
@@ -174,7 +176,7 @@ fun MoodDropdown(
             value = selectedMood.name.lowercase().replaceFirstChar { it.uppercase() },
             onValueChange = {},
             readOnly = true,
-            label = { Text("Mood") },
+            label = { Text(stringResource(R.string.entry_mood_label)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             modifier = Modifier

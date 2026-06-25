@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Lumina</string>
+
+    <!-- Home Screen -->
+    <string name="add_entry_content_description">Add Entry</string>
+    <string name="no_entries_yet">No entries yet. Start journaling!</string>
+    <string name="header_image_content_description">Tranquil Nature Scene</string>
+    <string name="welcome_back">Welcome back,</string>
+    <string name="tagline">Your Thoughts, Captured.</string>
+
+    <!-- Entry Creation Screen -->
+    <string name="new_journal_entry">New Journal Entry</string>
+    <string name="back_content_description">Back</string>
+    <string name="save_entry_content_description">Save Entry</string>
+    <string name="entry_title_label">Title</string>
+    <string name="entry_date_label">Date</string>
+    <string name="entry_content_label">How was your day?</string>
+    <string name="entry_mood_label">Mood</string>
 </resources>

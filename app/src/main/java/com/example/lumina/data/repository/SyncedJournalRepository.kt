@@ -1,7 +1,7 @@
 package com.example.lumina.data.repository
 
-import com.example.lumina.data.local.JournalDao
-import com.example.lumina.data.remote.api.LuminaApiService
+import com.example.lumina.data.datasource.LocalJournalDataSource
+import com.example.lumina.data.datasource.RemoteJournalDataSource
 import com.example.lumina.data.remote.dto.toDto
 import com.example.lumina.data.remote.dto.toJournalEntryEntity
 import com.example.lumina.domain.model.JournalEntry
@@ -11,33 +11,78 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SyncedJournalRepository @Inject constructor(
-    private val dao: JournalDao,
-    private val api: LuminaApiService
+    private val localDataSource: LocalJournalDataSource,
+    private val remoteDataSource: RemoteJournalDataSource
 ) : JournalRepository {
 
     override fun getAllEntriesStream(): Flow<List<JournalEntry>> =
-        dao.getAllEntries().map { entities -> entities.map { it.toDomain() } }
+        localDataSource.getAllEntriesStream().map { entities -> 
+            entities.map { it.toDomain() } 
+        }
 
     override suspend fun getEntryStream(id: Long): JournalEntry? =
-        dao.getEntryById(id)?.toDomain()
+        localDataSource.getEntryById(id)?.toDomain()
 
     override suspend fun insertEntry(entry: JournalEntry) {
-        dao.insertEntry(entry.toEntity())
-        runCatching { api.createEntry(entry.toDto()) }
+        val entity = entry.toEntity(isSynced = false)
+        localDataSource.insertEntry(entity)
+        syncUnsyncedEntry(entry)
     }
 
     override suspend fun updateEntry(entry: JournalEntry) {
-        dao.updateEntry(entry.toEntity())
-        runCatching { api.updateEntry(entry.id, entry.toDto()) }
+        val entity = entry.toEntity(isSynced = false)
+        localDataSource.updateEntry(entity)
+        syncUnsyncedEntry(entry)
     }
 
     override suspend fun deleteEntry(entry: JournalEntry) {
-        dao.deleteEntry(entry.toEntity())
-        runCatching { api.deleteEntry(entry.id) }
+        // Soft delete locally
+        val entity = entry.toEntity(isSynced = false, isDeleted = true)
+        localDataSource.updateEntry(entity)
+        
+        runCatching {
+            remoteDataSource.deleteEntry(entry.id)
+        }.onSuccess {
+            // Hard delete locally after successful remote delete
+            localDataSource.deleteEntry(entity)
+        }
     }
 
     override suspend fun syncFromRemote(): Result<Unit> = runCatching {
-        val remoteEntities = api.getEntries().map { it.toJournalEntryEntity() }
-        remoteEntities.forEach { dao.insertEntry(it) }
+        // 1. Push pending deletions
+        localDataSource.getPendingDeletions().forEach { entity ->
+            runCatching {
+                remoteDataSource.deleteEntry(entity.id)
+                localDataSource.deleteEntry(entity)
+            }
+        }
+
+        // 2. Push unsynced updates/creations
+        localDataSource.getUnsyncedEntries()
+            .filter { !it.isDeleted }
+            .forEach { entity ->
+                runCatching {
+                    remoteDataSource.updateEntry(entity.id, entity.toDomain().toDto())
+                    localDataSource.updateEntry(entity.copy(isSynced = true))
+                }
+            }
+
+        // 3. Fetch remote changes
+        val remoteEntries = remoteDataSource.getEntries()
+        
+        // 4. Conflict resolution: only update if not dirty locally
+        val localUnsyncedIds = localDataSource.getUnsyncedEntries().map { it.id }.toSet()
+        val entitiesToUpdate = remoteEntries
+            .map { it.toJournalEntryEntity() }
+            .filter { it.id !in localUnsyncedIds }
+            
+        localDataSource.updateEntries(entitiesToUpdate)
+    }
+
+    private suspend fun syncUnsyncedEntry(entry: JournalEntry) {
+        runCatching {
+            remoteDataSource.updateEntry(entry.id, entry.toDto())
+            localDataSource.updateEntry(entry.toEntity(isSynced = true))
+        }
     }
 }

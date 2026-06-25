@@ -10,5 +10,8 @@ data class JournalEntryEntity(
     val title: String,
     val content: String,
     val date: Long,
-    val mood: String
+    val mood: String,
+    val lastUpdated: Long = System.currentTimeMillis(),
+    val isSynced: Boolean = false,
+    val isDeleted: Boolean = false
 )

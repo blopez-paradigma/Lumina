@@ -11,11 +11,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JournalDao {
-    @Query("SELECT * FROM journal_entries ORDER BY date DESC")
+    @Query("SELECT * FROM journal_entries WHERE isDeleted = 0 ORDER BY date DESC")
     fun getAllEntries(): Flow<List<JournalEntryEntity>>
 
-    @Query("SELECT * FROM journal_entries WHERE id = :id")
+    @Query("SELECT * FROM journal_entries WHERE id = :id AND isDeleted = 0")
     suspend fun getEntryById(id: Long): JournalEntryEntity?
+
+    @Query("SELECT * FROM journal_entries WHERE isSynced = 0")
+    suspend fun getUnsyncedEntries(): List<JournalEntryEntity>
+
+    @Query("SELECT * FROM journal_entries WHERE isSynced = 0 AND isDeleted = 1")
+    suspend fun getPendingDeletions(): List<JournalEntryEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntry(entry: JournalEntryEntity)
